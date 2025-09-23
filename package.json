@@ -1,0 +1,29 @@
+{
+  "name": "cap-socket",
+  "version": "0.0.1",
+  "description": "Functions developed by Cap to establish real-time and persistent communication with the server using SocketIO and SignalR services.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cap",
+    "socket",
+    "socketIO",
+    "signalR",
+    "iran",
+    "ghanavati",
+    "etezadi",
+    "nuxt",
+    "nuxt3",
+    "nuxt-socket",
+    "capSocket",
+    "cap_socket",
+    "cap-socket"
+  ],
+  "author": "Ahmad Ghanavati",
+  "license": "ISC",
+  "dependencies": {
+    "@nuxt/kit": "^4.1.2"
+  }
+}

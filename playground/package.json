@@ -1,0 +1,14 @@
+{
+  "name": "playground",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nuxi dev"
+  },
+  "private": true,
+  "dependencies": {
+    "nuxt": "^3.11.2"
+  }
+}
+
