@@ -1,8 +1,7 @@
+import capSocket from "../src/module"
+
 export default defineNuxtConfig({
-  modules: ['../src/module'],
-  ssr:false,
-    socket: {
-        type: "signalr", // یا "socketio" یا "none"
-        url: "http://localhost:5000/hub",
-    },
+    modules: [capSocket],
+    ssr:false,
+    devtools: { enabled: true }
 })

@@ -1,0 +1,6 @@
+{
+  "socket": {
+    "type": "signalr",
+    "url": "http://localhost:3002/playgroundHub"
+  }
+}

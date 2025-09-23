@@ -8,17 +8,15 @@ export interface ModuleOptions {
 
 export default defineNuxtModule<ModuleOptions>({
     meta: {
-        name: "nuxt-socket-connector",
+        name: "cap-socket",
         configKey: "socket",
     },
     defaults: {
         type: "none",
         url: "",
     },
-    setup(options, nuxt) {
+    setup(_, nuxt) {
         const resolver = createResolver(import.meta.url)
-        nuxt.options.runtimeConfig.public.socket = options
-
         addPlugin(resolver.resolve("./runtime/plugin"))
     },
 })

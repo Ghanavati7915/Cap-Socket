@@ -1,53 +1,70 @@
+import { io, Socket as SocketIOClient } from "socket.io-client"
 import * as signalR from "@microsoft/signalr"
-import { io, Socket } from "socket.io-client"
 
-export type SocketType = "signalr" | "socketio" | "none"
-
-interface SocketOptions {
-    type: SocketType
+export interface SocketOptions {
+    type: "socketio" | "signalr" | "none"
     url: string
-    options?: any
 }
 
-export class SocketManager {
-    private type: SocketType
-    private url: string
-    private options: any
-    private connection: signalR.HubConnection | Socket | null = null
+type CallbackFn = (...args: any[]) => void
 
-    constructor(config: SocketOptions) {
-        this.type = config.type
-        this.url = config.url
-        this.options = config.options || {}
+export class SocketManager {
+    private type: SocketOptions["type"]
+    private url: string
+    private socketIO?: SocketIOClient
+    private signalRConn?: signalR.HubConnection
+    private listeners: Record<string, CallbackFn[]> = {}
+
+    constructor(options: SocketOptions) {
+        this.type = options.type
+        this.url = options.url
     }
 
     async connect() {
-        if (this.type === "signalr") {
-            this.connection = new signalR.HubConnectionBuilder()
-                .withUrl(this.url, this.options)
+        if (this.type === "socketio") {
+            this.socketIO = io(this.url)
+            this.socketIO.on("connect", () => {
+                console.log("[CAP-SOCKET] Socket.IO connected!")
+            })
+            // register listeners
+            for (const event in this.listeners) {
+                this.listeners[event].forEach(cb => this.socketIO?.on(event, cb))
+            }
+        }
+        else if (this.type === "signalr") {
+            this.signalRConn = new signalR.HubConnectionBuilder()
+                .withUrl(this.url)
                 .withAutomaticReconnect()
                 .build()
-            await this.connection.start()
-        } else if (this.type === "socketio") {
-            this.connection = io(this.url, this.options)
+
+            // register listeners
+            for (const event in this.listeners) {
+                this.signalRConn.on(event, (...args) => {
+                    this.listeners[event].forEach(cb => cb(...args))
+                })
+            }
+
+            await this.signalRConn.start()
+            console.log("[CAP-SOCKET] SignalR connected!")
         }
     }
 
-    on(event: string, callback: (...args: any[]) => void) {
-        if (!this.connection) return
-        if (this.type === "signalr") {
-            ;(this.connection as signalR.HubConnection).on(event, callback)
-        } else if (this.type === "socketio") {
-            ;(this.connection as Socket).on(event, callback)
+    send(event: string, payload?: any) {
+        if (this.type === "socketio") {
+            this.socketIO?.emit(event, payload)
+        } else if (this.type === "signalr") {
+            this.signalRConn?.invoke(event, payload).catch(console.error)
         }
     }
 
-    async send(event: string, ...args: any[]) {
-        if (!this.connection) return
-        if (this.type === "signalr") {
-            await (this.connection as signalR.HubConnection).invoke(event, ...args)
-        } else if (this.type === "socketio") {
-            ;(this.connection as Socket).emit(event, ...args)
+    on(event: string, callback: CallbackFn) {
+        if (!this.listeners[event]) this.listeners[event] = []
+        this.listeners[event].push(callback)
+
+        if (this.type === "socketio" && this.socketIO) {
+            this.socketIO.on(event, callback)
+        } else if (this.type === "signalr" && this.signalRConn) {
+            this.signalRConn.on(event, callback)
         }
     }
 }
