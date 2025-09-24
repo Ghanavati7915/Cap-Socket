@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "socketio": "node socketio.js",
-    "signalr": "node signalr.js"
   },
   "keywords": [],
   "author": "",

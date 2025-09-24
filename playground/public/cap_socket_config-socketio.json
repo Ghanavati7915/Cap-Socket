@@ -2,5 +2,10 @@
   "socket": {
     "type": "socketio",
     "url": "http://localhost:3001"
+  },
+
+  "socket": {
+    "type": "signalr",
+    "url": "http://localhost:3001/playgroundHub"
   }
 }
