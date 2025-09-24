@@ -1,7 +1,6 @@
-import capSocket from "../src/module"
 
 export default defineNuxtConfig({
-    modules: [capSocket],
+    modules: ['../src/module'],
     ssr:false,
     devtools: { enabled: true }
 })

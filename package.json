@@ -1,6 +1,6 @@
 {
   "name": "cap-socket",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Functions developed by Cap to establish real-time and persistent communication with the server using SocketIO and SignalR services.",
   "type": "module",
   "main": "dist/module.cjs",

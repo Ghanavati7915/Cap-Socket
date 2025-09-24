@@ -3,10 +3,6 @@
 
 Manage RealTime Socket Connection Between Client/Server in CAPSocket package manager:
 
-[![npm version][npm-version-src]][npm-version-href]
-[![npm downloads][npm-downloads-src]][npm-downloads-href]
-[![License][license-src]][license-href]
-
 Last Testing With Nuxt Version : **3.13.0**
 
 ## Sponsors
@@ -15,7 +11,7 @@ Last Testing With Nuxt Version : **3.13.0**
     <tr>
       <td align="center" valign="middle">
         <a href="https://bit.dev/?utm_source=pnpm&utm_medium=readme" target="_blank">
-<img src="https://betezadi.ir/_nuxt/img/logo.12e352e.png" width="150" height="80" alt="Cap Logo">
+<img src="https://betezadi.ir/_nuxt/img/logo.12e352e.png" width="150" height="150" alt="Cap Logo">
 </a>
       </td>
     </tr>
@@ -48,10 +44,10 @@ Installing Package To Your Project With :
 ```
 --------------------------------
 
-Then, add **capSocket** to the modules section of your Nuxt configuration:
+Then, add **cap-socket** to the modules section of your Nuxt configuration:
 ```javascript
 export default defineNuxtConfig({
-  modules: ['capSocket']
+  modules: ['cap-socket']
 })
 ```
 -------------------------------
@@ -74,18 +70,16 @@ For this, create a file called **cap_socket_config.json** in the **public** fold
 ```
 The advantage of this work is that when the output from the project is prepared and placed on the server, you can change the settings related to the connection to the BackEnd without the need to prepare a new output.
 
-
 ## Setting
 | **Key**                               | **Type**  | **Default** | **Description**                                                                                                               |
-|---------------------------------------|-----------|-------------|-------------------------------------------------------------------------------------------------------------------------------|
-| `type`                            | `string`  | empty       | Describe                                                                                                                      |
-| `url`                       | `string`  | empty       | Describe                                               |
-| `debug`                          | `boolean` | true        | Describe |
-| `reconnectAttempts`                              | `number`   | 10          | Describe                                     |
-| `reconnectDelay`                     | `number`  | 2           | Describe                                              |
-| `reconnectDelayMax`                    | `number`  | 15          | Describe                                                 |
-| `timeout`                 | `number`  | 20          | Describe                |
-
+|---------------------------------------|-----------|----------|-------------------------------------------------------------------------------------------------------------------------------|
+| `type`                            | `string`  | `signalr`         | Specifies the type of communication package (SignalR or SocketIO)                                                                                                                     |
+| `url`                       | `string`  | ``    | Address of the server managing socket connections (for SignalR along with the HUB address)                                               |
+| `debug`                          | `boolean` | true     | Debugging |
+| `reconnectAttempts`                              | `number`   | 10       | Number of attempts to reconnect to the socket server                                     |
+| `reconnectDelay`                     | `number`  | 2        |   Number of attempts to reconnect to the socket server                                            |
+| `reconnectDelayMax`                    | `number`  | 15       | Reconnect delay (in seconds)                                                 |
+| `timeout`                 | `number`  | 20       | Wait time to establish a connection                |
 
 ## Thank You
 Thanks to all colleagues of [CAP Company](https://i-cap.ir)
