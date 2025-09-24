@@ -9,7 +9,8 @@
   "scripts": {
     "dev": "nuxt dev playground",
     "build": "nuxt build",
-    "prepare": "nuxt prepare"
+    "prepare": "nuxt prepare",
+    "publish": "npm publish --access public"
   },
   "keywords": [
     "cap",

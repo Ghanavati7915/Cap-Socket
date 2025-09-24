@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "dev": "nuxi dev",
-    "publish": "npm publish --access public"
   },
   "private": true,
   "dependencies": {
