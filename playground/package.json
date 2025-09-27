@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nuxi dev",
+    "dev": "nuxi dev"
   },
   "private": true,
   "dependencies": {

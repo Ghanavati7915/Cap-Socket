@@ -1,11 +1,18 @@
 {
   "name": "cap-socket",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Functions developed by Cap to establish real-time and persistent communication with the server using SocketIO and SignalR services.",
   "type": "module",
   "main": "dist/module.cjs",
   "module": "dist/module.mjs",
   "types": "dist/module.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/module.mjs",
+      "require": "./dist/module.cjs",
+      "types": "./dist/module.d.ts"
+    }
+  },
   "scripts": {
     "dev": "nuxt dev playground",
     "build": "nuxt build",
