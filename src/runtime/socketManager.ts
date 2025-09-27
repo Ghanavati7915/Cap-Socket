@@ -5,13 +5,9 @@ export interface SocketOptions {
     type: "socketio" | "signalr" | "none"
     url: string
     debug?: boolean
-
-    // Reconnect settings (seconds)
     reconnectAttempts?: number
     reconnectDelay?: number
     reconnectDelayMax?: number
-
-    // Timeout settings (seconds)
     timeout?: number
 }
 
@@ -27,6 +23,8 @@ export class SocketManager {
     private debug: boolean
     private options: SocketOptions
     private reconnectAttempt = 0
+    private _isConnected = false
+    private _isReconnecting = false
     //#endregion
 
     //#region Constructor
@@ -51,6 +49,14 @@ export class SocketManager {
     }
     //#endregion
 
+    //#region Public isConnected property
+    get isConnected(): "connected" | "disconnected" | "reconnecting" {
+        if (this._isConnected) return "connected"
+        if (this._isReconnecting) return "reconnecting"
+        return "disconnected"
+    }
+    //#endregion
+
     //#region Socket.IO connect
     private async connectSocketIO() {
         const opts = this.options
@@ -64,17 +70,23 @@ export class SocketManager {
 
         this.socketIO.on("connect", () => {
             this.reconnectAttempt = 0
+            this._isConnected = true
+            this._isReconnecting = false
             this.log("info", "Socket.IO connected!")
             this.emitInternal("connect")
         })
 
         this.socketIO.on("disconnect", reason => {
+            this._isConnected = false
+            this._isReconnecting = false
             this.log("warn", `Socket.IO disconnected: ${reason}`)
             this.emitInternal("disconnect", reason)
         })
 
         this.socketIO.on("connect_error", err => {
             this.reconnectAttempt++
+            this._isConnected = false
+            this._isReconnecting = true
             this.log("warn", `Socket.IO connect attempt #${this.reconnectAttempt} failed: ${err.message}`)
             this.emitInternal("reconnecting", { attempt: this.reconnectAttempt, reason: err.message })
         })
@@ -94,11 +106,15 @@ export class SocketManager {
             .build()
 
         this.signalRConn.onclose(err => {
+            this._isConnected = false
+            this._isReconnecting = false
             this.log("warn", "SignalR closed:", err?.message)
             this.emitInternal("disconnect", err?.message)
         })
 
         this.signalRConn.onreconnecting(err => {
+            this._isConnected = false
+            this._isReconnecting = true
             this.reconnectAttempt++
             const reason = err?.message || "Reconnecting..."
             this.log("warn", `SignalR reconnect attempt #${this.reconnectAttempt}: ${reason}`)
@@ -106,6 +122,8 @@ export class SocketManager {
         })
 
         this.signalRConn.onreconnected(id => {
+            this._isConnected = true
+            this._isReconnecting = false
             this.reconnectAttempt = 0
             this.log("info", `SignalR reconnected: ${id}`)
             this.emitInternal("reconnected", id)
@@ -118,7 +136,6 @@ export class SocketManager {
             })
         }
 
-        // Persistent connect attempt
         await this.attemptSignalRConnect()
     }
     //#endregion
@@ -129,22 +146,7 @@ export class SocketManager {
 
         while (true) {
             try {
-                // 1️⃣ Check server availability
-                let urlObj = new URL(this.url);
-                let baseUrl = `${urlObj.origin}/`;
-                const reachable = await fetch(baseUrl, { method: "ALIVE" })
-                    .then(res => res.ok)
-                    .catch(() => false)
-
-                if (!reachable) {
-                    this.reconnectAttempt++
-                    this.emitInternal("status", { type: "error", message: "SignalR server unreachable", attempt: this.reconnectAttempt })
-                    this.log("warn", `⚠️ SignalR server unreachable, attempt #${this.reconnectAttempt}`)
-                    await this.delay(retryDelay)
-                    continue
-                }
-
-                // 2️⃣ Start connection with timeout
+                // 1️⃣ Start connection with timeout
                 const timeout = (this.options.timeout ?? 20) * 1000
                 await Promise.race([
                     this.signalRConn!.start(),
@@ -152,6 +154,8 @@ export class SocketManager {
                 ])
 
                 // Connected successfully
+                this._isConnected = true
+                this._isReconnecting = false
                 this.reconnectAttempt = 0
                 this.emitInternal("connect")
                 this.emitInternal("status", { type: "connected" })
@@ -159,6 +163,8 @@ export class SocketManager {
                 break
 
             } catch (err: any) {
+                this._isConnected = false
+                this._isReconnecting = true
                 this.reconnectAttempt++
                 this.emitInternal("error", err)
                 this.emitInternal("status", { type: "error", message: err.message || err, attempt: this.reconnectAttempt })
@@ -167,21 +173,20 @@ export class SocketManager {
             }
         }
     }
+    //#endregion
 
     private delay(ms: number) {
         return new Promise(resolve => setTimeout(resolve, ms))
     }
-    //#endregion
 
     //#region Public connect
     async connect() {
         try {
-            if (this.type === "socketio") {
-                await this.connectSocketIO()
-            } else if (this.type === "signalr") {
-                await this.connectSignalR()
-            }
+            if (this.type === "socketio") await this.connectSocketIO()
+            else if (this.type === "signalr") await this.connectSignalR()
         } catch (err: any) {
+            this._isConnected = false
+            this._isReconnecting = false
             this.emitInternal("error", err)
             this.emitInternal("status", { type: "error", message: err.message || err })
         }
@@ -215,12 +220,12 @@ export class SocketManager {
 
         if (this.type === "socketio" && this.socketIO) this.socketIO.on(event, callback)
         else if (this.type === "signalr" && this.signalRConn) this.signalRConn.on(event, callback)
-    }
 
+        // ⚡ If listener is "connect" and already connected, call immediately
+        if (event === "connect" && this._isConnected) callback()
+    }
     private emitInternal(event: string, ...args: any[]) {
-        if (this.listeners[event]) {
-            this.listeners[event].forEach(cb => cb(...args))
-        }
+        if (this.listeners[event]) this.listeners[event].forEach(cb => cb(...args))
     }
     //#endregion
 
@@ -230,11 +235,7 @@ export class SocketManager {
         const delay = (this.options.reconnectDelay ?? 2) * 1000
         const maxDelay = (this.options.reconnectDelayMax ?? 10) * 1000
         const delays: number[] = []
-
-        for (let i = 0; i < attempts; i++) {
-            delays.push(Math.min(delay * (i + 1), maxDelay))
-        }
-
+        for (let i = 0; i < attempts; i++) delays.push(Math.min(delay * (i + 1), maxDelay))
         return delays
     }
     //#endregion
