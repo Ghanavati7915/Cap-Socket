@@ -4,15 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="299b5672-b28a-4e6a-9f29-5ae8fcb778ce" name="Changes" comment="update package.json">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Cap-Socket.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+    <list default="true" id="299b5672-b28a-4e6a-9f29-5ae8fcb778ce" name="Changes" comment="fix some issues">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/playground/app.vue" beforeDir="false" afterPath="$PROJECT_DIR$/playground/app.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/runtime/socketManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/runtime/socketManager.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/playground/public/cap_socket_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/playground/public/cap_socket_config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/runtime/composables/useSocket.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/runtime/composables/useSocket.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/runtime/plugin.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/runtime/plugin.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,8 +125,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="npm.dev (۱)" />
-        <item itemvalue="npm.publish" />
         <item itemvalue="npm.build" />
+        <item itemvalue="npm.publish" />
         <item itemvalue="npm.dev" />
         <item itemvalue="npm.prepare" />
       </list>
@@ -150,7 +149,9 @@
       <workItem from="1758632522242" duration="5938000" />
       <workItem from="1758699743632" duration="16611000" />
       <workItem from="1758956026958" duration="1329000" />
-      <workItem from="1758957445409" duration="8827000" />
+      <workItem from="1758957445409" duration="10603000" />
+      <workItem from="1759242937809" duration="101000" />
+      <workItem from="1759243273171" duration="879000" />
     </task>
     <task id="LOCAL‎−۰۰۰۰۱" summary="init project">
       <option name="closed" value="true" />
@@ -201,7 +202,14 @@
       <option name="presentableId" value="LOCAL‎−۰۰۰۰۷" />
       <updated>1758957289346</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL‎−۰۰۰۰۸" summary="fix some issues">
+      <option name="closed" value="true" />
+      <created>1758966907355</created>
+      <option name="number" value="LOCAL‎−۰۰۰۰۸" />
+      <option name="presentableId" value="LOCAL‎−۰۰۰۰۸" />
+      <updated>1758966907355</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -213,6 +221,7 @@
     <MESSAGE value="Complete Project For SignalR&#10;Add Server" />
     <MESSAGE value="update readme and some config in playground" />
     <MESSAGE value="update package.json" />
-    <option name="LAST_COMMIT_MESSAGE" value="update package.json" />
+    <MESSAGE value="fix some issues" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix some issues" />
   </component>
 </project>

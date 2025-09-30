@@ -1,4 +1,4 @@
-import { ref, readonly } from "vue"
+import { ref, readonly, computed } from "vue"
 import { SocketManager, SocketOptions } from "../socketManager"
 
 const socketManagerRef = ref<SocketManager | null>(null)
@@ -9,11 +9,23 @@ export async function initSocket(config: SocketOptions) {
     await manager.connect()
     socketManagerRef.value = manager
     isConnected.value = true
+
+    // لیسنرهای تغییر وضعیت
+    manager.on("connect", () => {
+        isConnected.value = true
+    })
+    manager.on("disconnect", () => {
+        isConnected.value = false
+    })
 }
 
-export function useSocket(): { socket: SocketManager | null; isConnected: boolean } {
-    return { socket: socketManagerRef.value, isConnected: isConnected.value }
+export function useSocket() {
+    return {
+        socket: computed(() => socketManagerRef.value),
+        isConnected: computed(() => isConnected.value),
+    }
 }
 
+// برای استفاده در جاهای خاص
 export const socketManager = readonly(socketManagerRef)
 export const socketConnected = readonly(isConnected)
