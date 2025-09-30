@@ -9,7 +9,7 @@ export interface ModuleOptions {
 export default defineNuxtModule<ModuleOptions>({
     meta: {
         name: "cap-socket",
-        configKey: "capSocket", // یکتا و مشخص برای تنظیمات
+        configKey: "capSocket",
     },
     defaults: {
         type: "none",
@@ -18,13 +18,13 @@ export default defineNuxtModule<ModuleOptions>({
     setup(_, nuxt) {
         const resolver = createResolver(import.meta.url)
 
-        // پلاگین
+        // اضافه کردن پلاگین
         addPlugin({
             src: resolver.resolve("./runtime/plugin"),
-            mode: "all", // هم در ssr هم client
+            mode: "all",
         })
 
-        // کامپوزبل useSocket
+        // معرفی مسیر composables برای auto-import
         nuxt.hook("imports:dirs", (dirs) => {
             dirs.push(resolver.resolve("./runtime/composables"))
         })

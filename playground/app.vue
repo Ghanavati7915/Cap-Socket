@@ -1,85 +1,116 @@
 <template>
-  <div style="padding:20px">
-    <div> Cap Socket From Nuxt Socket Module ,  <span style="font-weight: bold;font-size: large">playground!</span> </div>
-    <h1 class="text-2xl font-bold">
-      Playground Cap-Socket
-      <span v-if="isConnected == 'reconnecting'">🔄</span>
-      <span v-if="isConnected == 'connected'">✅</span>
-      <span v-if="isConnected == 'disconnected'">❌</span>
-    </h1>
+  <div class="p-6">
+    <h1 class="text-2xl font-bold mb-4">CAP Socket Playground</h1>
 
-    <div style="margin-top: 10px">
-      <span style="font-weight: bold">REGISTER USER -> </span>
-      <span> User ID :</span>
-      <input type="text" v-model="userID" style="margin: auto 10px"/>
-      <button v-if="isConnected == 'connected'" @click="register"> Register </button>
-      <div v-if="isConnected == 'reconnecting'"> Trying To Connect </div>
-      <div v-if="isConnected == 'disconnected'"> Socket Disconnected </div>
+    <p>Status:
+      <span
+          :class="{
+          'text-green-600': socket.isConnected === 'connected',
+          'text-yellow-600': socket.isConnected === 'reconnecting',
+          'text-red-600': socket.isConnected === 'disconnected'
+        }">
+        {{ socket.isConnected }}
+      </span>
+    </p>
+
+    <div class="mt-4">
+      <button
+          class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          @click="sendPing"
+          :disabled="socket.isConnected !== 'connected'"
+      >
+        Send Ping
+      </button>
     </div>
 
-    <div style="margin-top: 10px">
-      <span style="font-weight: bold">CALL USER -> </span>
-      <span> User ID :</span>
-      <input type="text" v-model="RQ_UserID" style="margin: auto 10px"/>
-      <button v-if="isConnected == 'connected'" @click="sendJoinRequest"> Send Request </button>
-      <div v-if="isConnected == 'reconnecting'"> Trying To Connect </div>
-      <div v-if="isConnected == 'disconnected'"> Socket Disconnected </div>
+    <div class="mt-4">
+      <h2 class="font-semibold mb-2">Messages:</h2>
+      <ul class="list-disc list-inside">
+        <li v-for="(msg, idx) in messages" :key="idx">{{ msg }}</li>
+      </ul>
     </div>
   </div>
 </template>
 
-
 <script setup lang="ts">
-import { ref, watch, onMounted } from "vue"
+import {ref, onMounted, watch} from 'vue'
+const socket = useSocket()
 
-const { socket, isConnected } = useSocket() // socket is a computed ref
+// reactive messages list
+const messages = ref<string[]>([])
 
-const userID = ref<string>("")
-const RQ_UserID = ref<string>("")
+const userID = ref<string>("12345")
+const RQ_UserID = ref<string>("12345")
 
-const register = () => {
-  const mgr = socket.value
-  if (mgr) mgr.send("register", userID.value)
-}
-
-const sendJoinRequest = () => {
-  const mgr = socket.value
-  if (!mgr) return
-  const requestModel = {
-    userId: RQ_UserID.value,
-    payload: { name: "ali", age: 30 }
+// ارسال پیام تست
+const sendPing = () => {
+  if (socket) {
+    const requestModel = {
+      userId: RQ_UserID.value,
+      payload: { name: "ali", age: 30 }
+    }
+    socket.send("callUserTest", requestModel)
   }
-  mgr.send("callUserTest", requestModel)
 }
 
-function attachListeners(mgr: any) {
-  // avoid attaching duplicates: you can add guards if needed
-  mgr.on("connect", () => console.log("✅ Connected"))
-  mgr.on("disconnect", () => console.log("❌ Disconnected"))
-  mgr.on("reconnecting", () => console.log("🔄️ Reconnecting"))
-  mgr.on("reconnected", () => console.log("️✳️ Reconnected"))
-  mgr.on("error", (data: any) => console.log("⚠️ Error :", data))
-
-  mgr.on("connect", () => {
-    mgr.send("sendMessage", "Hi from Playground!")
+const socketHandler = () => {
+  socket.on('connect', () => {
+    messages.value.push('✅ Connected to socket')
+    socket.send("sendMessage", "Hi from Playground!")
+    socket.send("register", '12345')
   })
 
-  mgr.on("message", (msg: any) => console.log("New Message From Server:", msg))
-  mgr.on("call", (msg: any) => console.log("New Call From Server:", msg))
+  socket.on('disconnect', (reason) => {
+    messages.value.push(`⚠ Disconnected: ${reason}`)
+  })
+
+  socket.on('reconnecting', (data) => {
+    messages.value.push(`🔄 Reconnecting attempt #${data.attempt}`)
+  })
+
+  socket.on('ping', (payload) => {
+    messages.value.push(`📩 Ping received: ${JSON.stringify(payload)}`)
+  })
+
+  socket.on('call', (payload) => {
+    messages.value.push(`📩 call received: ${JSON.stringify(payload)}`)
+  })
+
+  socket.on('message', (payload) => {
+    messages.value.push(`📩 message received: ${JSON.stringify(payload)}`)
+  })
+
+  socket.on('broadcast', (payload) => {
+    messages.value.push(`📩 broadcast received: ${JSON.stringify(payload)}`)
+  })
+
+  socket.on('Broadcast', (payload) => {
+    messages.value.push(`📩 Broadcast received: ${JSON.stringify(payload)}`)
+  })
+
+  socket.on('BroadCast', (payload) => {
+    messages.value.push(`📩 BroadCast received: ${JSON.stringify(payload)}`)
+  })
 }
 
-onMounted(() => {
-  // if socket manager already available
-  if (socket.value) attachListeners(socket.value)
+watch(
+    () => socket,
+    (mgr) => {
+      socketHandler()
+    },
+    { immediate: true,deep: true }
+)
 
-  // watch for late availability (e.g. backend already up)
-  watch(
-      socket,
-      (mgr) => {
-        if (mgr) attachListeners(mgr)
-      },
-      { immediate: true }
-  )
+// ثبت listenerها
+onMounted(() => {
+  // if (!socket) return
+  // testSocket()
+
 })
 </script>
 
+<style scoped>
+body {
+  font-family: system-ui, sans-serif;
+}
+</style>

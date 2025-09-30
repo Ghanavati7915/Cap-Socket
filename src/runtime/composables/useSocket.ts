@@ -20,10 +20,10 @@ export async function initSocket(config: SocketOptions) {
 }
 
 export function useSocket() {
-    return {
-        socket: computed(() => socketManagerRef.value),
-        isConnected: computed(() => isConnected.value),
-    }
+    const nuxtApp = useNuxtApp()
+    const socket = nuxtApp.$socket as SocketManager | null
+    if (!socket) throw new Error("SocketManager not initialized yet!")
+    return socket
 }
 
 // برای استفاده در جاهای خاص
