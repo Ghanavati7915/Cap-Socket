@@ -2,13 +2,14 @@ import { io, Socket as SocketIOClient } from "socket.io-client"
 import * as signalR from "@microsoft/signalr"
 
 export interface SocketOptions {
-    type: "socketio" | "signalr" | "none"
+    type: "socketio" | "signalr"
     url: string
     debug?: boolean
     reconnectAttempts?: number
     reconnectDelay?: number
     reconnectDelayMax?: number
     timeout?: number
+    signalRConnectionType?: "WebSockets" | "LongPolling" | "Both" // حذف none
 }
 
 /* -------------------------------- Types -------------------------------- */
@@ -120,47 +121,58 @@ export class SocketManager {
 
     //#region Connect SignalR
     private async connectSignalR() {
+        const transportMap: Record<string, signalR.HttpTransportType> = {
+            WebSockets: signalR.HttpTransportType.WebSockets,
+            LongPolling: signalR.HttpTransportType.LongPolling,
+            Both: signalR.HttpTransportType.WebSockets | signalR.HttpTransportType.LongPolling,
+        };
+
+        const transportType =
+            transportMap[this.options.signalRConnectionType ?? "Both"];
+
         this.signalRConn = new signalR.HubConnectionBuilder()
             .withUrl(this.url, {
-                transport:
-                    signalR.HttpTransportType.WebSockets |
-                    signalR.HttpTransportType.LongPolling,
-                accessTokenFactory: () => this.resolveToken(),
+                transport: transportType,
+                // ارسال توکن در header Authorization
+                headers: {
+                    Authorization: `Bearer ${this.resolveToken()}`,
+                },
             })
             .withAutomaticReconnect(this.buildSignalRReconnectDelays())
-            .build()
+            .build();
 
         this.signalRConn.onclose(err => {
-            this._isConnected = false
-            this._isReconnecting = false
-            this.emitInternal("disconnect", err?.message)
-        })
+            this._isConnected = false;
+            this._isReconnecting = false;
+            this.emitInternal("disconnect", err?.message);
+        });
 
         this.signalRConn.onreconnecting(err => {
-            this._isConnected = false
-            this._isReconnecting = true
-            this.reconnectAttempt++
+            this._isConnected = false;
+            this._isReconnecting = true;
+            this.reconnectAttempt++;
             this.emitInternal("reconnecting", {
                 attempt: this.reconnectAttempt,
                 reason: err?.message,
-            })
-        })
+            });
+        });
 
         this.signalRConn.onreconnected(() => {
-            this._isConnected = true
-            this._isReconnecting = false
-            this.reconnectAttempt = 0
-            this.emitInternal("connect")
-        })
+            this._isConnected = true;
+            this._isReconnecting = false;
+            this.reconnectAttempt = 0;
+            this.emitInternal("connect");
+        });
 
         for (const event in this.listeners) {
             this.signalRConn.on(event, (...args) =>
                 this.listeners[event].forEach(cb => cb(...args))
-            )
+            );
         }
 
-        await this.attemptSignalRConnect()
+        await this.attemptSignalRConnect();
     }
+
     //#endregion
 
     //#region SignalR Persistent Connect

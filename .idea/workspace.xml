@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="299b5672-b28a-4e6a-9f29-5ae8fcb778ce" name="Changes" comment="fix useSocket Issue 2">
+    <list default="true" id="299b5672-b28a-4e6a-9f29-5ae8fcb778ce" name="Changes" comment="add JWT Authorization Token In Connection &#10;Fix Some Issue&#10;Clear Codes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/playground/app.vue" beforeDir="false" afterPath="$PROJECT_DIR$/playground/app.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/playground/nuxt.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/playground/nuxt.config.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/playground/public/cap_socket_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/playground/public/cap_socket_config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/runtime/composables/useSocket.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/runtime/composables/useSocket.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/runtime/plugin.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/runtime/plugin.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/runtime/socketManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/runtime/socketManager.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -59,6 +56,7 @@
     &quot;npm.dev (۲).executor&quot;: &quot;Run&quot;,
     &quot;npm.dev.executor&quot;: &quot;Run&quot;,
     &quot;npm.prepare.executor&quot;: &quot;Run&quot;,
+    &quot;npm.prepublishOnly.executor&quot;: &quot;Run&quot;,
     &quot;npm.publish.executor&quot;: &quot;Run&quot;,
     &quot;npm.socketio.executor&quot;: &quot;Run&quot;,
     &quot;ts.external.directory.path&quot;: &quot;F:\\Project\\Projects\\Cap-Socket\\node_modules\\typescript\\lib&quot;,
@@ -73,7 +71,7 @@
       <recent name="F:\Project\Projects\Cap-Socket\socket-server" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.dev (۱)">
+  <component name="RunManager" selected="npm.publish">
     <configuration name="build" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -104,11 +102,11 @@
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="prepare" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+    <configuration name="prepublishOnly" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
       <scripts>
-        <script value="prepare" />
+        <script value="prepublishOnly" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -126,11 +124,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.dev (۱)" />
         <item itemvalue="npm.publish" />
         <item itemvalue="npm.build" />
+        <item itemvalue="npm.prepublishOnly" />
+        <item itemvalue="npm.dev (۱)" />
         <item itemvalue="npm.dev" />
-        <item itemvalue="npm.prepare" />
       </list>
     </recent_temporary>
   </component>
@@ -160,7 +158,8 @@
       <workItem from="1761059457560" duration="1344000" />
       <workItem from="1761562426001" duration="647000" />
       <workItem from="1761658032624" duration="167000" />
-      <workItem from="1765777627760" duration="5164000" />
+      <workItem from="1765777627760" duration="8054000" />
+      <workItem from="1765789213229" duration="1700000" />
     </task>
     <task id="LOCAL‎−۰۰۰۰۱" summary="init project">
       <option name="closed" value="true" />
@@ -232,7 +231,14 @@
       <option name="presentableId" value="LOCAL‎−۰۰۰۱۰" />
       <updated>1759248603218</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL‎−۰۰۰۱۱" summary="add JWT Authorization Token In Connection &#10;Fix Some Issue&#10;Clear Codes">
+      <option name="closed" value="true" />
+      <created>1765784442112</created>
+      <option name="number" value="LOCAL‎−۰۰۰۱۱" />
+      <option name="presentableId" value="LOCAL‎−۰۰۰۱۱" />
+      <updated>1765784442112</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -247,6 +253,7 @@
     <MESSAGE value="fix some issues" />
     <MESSAGE value="fix useSocket Issue" />
     <MESSAGE value="fix useSocket Issue 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix useSocket Issue 2" />
+    <MESSAGE value="add JWT Authorization Token In Connection &#10;Fix Some Issue&#10;Clear Codes" />
+    <option name="LAST_COMMIT_MESSAGE" value="add JWT Authorization Token In Connection &#10;Fix Some Issue&#10;Clear Codes" />
   </component>
 </project>
