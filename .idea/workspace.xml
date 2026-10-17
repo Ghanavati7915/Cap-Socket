@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="299b5672-b28a-4e6a-9f29-5ae8fcb778ce" name="Changes" comment="add JWT Authorization Token In Connection &#10;Fix Some Issue&#10;Clear Codes">
+    <list default="true" id="299b5672-b28a-4e6a-9f29-5ae8fcb778ce" name="Changes" comment="add SignalR Connection Type To config">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/playground/public/cap_socket_config.json" beforeDir="false" afterPath="$PROJECT_DIR$/playground/public/cap_socket_config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/runtime/socketManager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/runtime/socketManager.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,31 +34,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;F:/Project/Projects/Cap-Socket/playground&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.build.executor&quot;: &quot;Run&quot;,
-    &quot;npm.dev (۱).executor&quot;: &quot;Run&quot;,
-    &quot;npm.dev (۲).executor&quot;: &quot;Run&quot;,
-    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
-    &quot;npm.prepare.executor&quot;: &quot;Run&quot;,
-    &quot;npm.prepublishOnly.executor&quot;: &quot;Run&quot;,
-    &quot;npm.publish.executor&quot;: &quot;Run&quot;,
-    &quot;npm.socketio.executor&quot;: &quot;Run&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;F:\\Project\\Projects\\Cap-Socket\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "F:/Project/Projects/Cap-Socket/playground",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.build.executor": "Run",
+    "npm.dev (۱).executor": "Run",
+    "npm.dev (۲).executor": "Run",
+    "npm.dev.executor": "Run",
+    "npm.prepare.executor": "Run",
+    "npm.prepublishOnly.executor": "Run",
+    "npm.publish.executor": "Run",
+    "npm.socketio.executor": "Run",
+    "ts.external.directory.path": "F:\\Project\\Projects\\Cap-Socket\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\Project\Projects\Cap-Socket\playground" />
@@ -159,7 +155,8 @@
       <workItem from="1761562426001" duration="647000" />
       <workItem from="1761658032624" duration="167000" />
       <workItem from="1765777627760" duration="8054000" />
-      <workItem from="1765789213229" duration="1700000" />
+      <workItem from="1765789213229" duration="1926000" />
+      <workItem from="1769592892844" duration="437000" />
     </task>
     <task id="LOCAL‎−۰۰۰۰۱" summary="init project">
       <option name="closed" value="true" />
@@ -238,7 +235,14 @@
       <option name="presentableId" value="LOCAL‎−۰۰۰۱۱" />
       <updated>1765784442112</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL‎−۰۰۰۱۲" summary="add SignalR Connection Type To config">
+      <option name="closed" value="true" />
+      <created>1765791034532</created>
+      <option name="number" value="LOCAL‎−۰۰۰۱۲" />
+      <option name="presentableId" value="LOCAL‎−۰۰۰۱۲" />
+      <updated>1765791034532</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -254,6 +258,7 @@
     <MESSAGE value="fix useSocket Issue" />
     <MESSAGE value="fix useSocket Issue 2" />
     <MESSAGE value="add JWT Authorization Token In Connection &#10;Fix Some Issue&#10;Clear Codes" />
-    <option name="LAST_COMMIT_MESSAGE" value="add JWT Authorization Token In Connection &#10;Fix Some Issue&#10;Clear Codes" />
+    <MESSAGE value="add SignalR Connection Type To config" />
+    <option name="LAST_COMMIT_MESSAGE" value="add SignalR Connection Type To config" />
   </component>
 </project>

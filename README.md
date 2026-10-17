@@ -64,7 +64,9 @@ For this, create a file called **cap_socket_config.json** in the **public** fold
             "reconnectAttempts": 10,
             "reconnectDelay": 2,
             "reconnectDelayMax": 15,
-            "timeout": 20
+            "timeout": 20,
+            "signalRConnectionType": "WebSockets",
+            "skipNegotiation": true
     }
 }
 ```
@@ -80,6 +82,10 @@ The advantage of this work is that when the output from the project is prepared 
 | `reconnectDelay`                     | `number`  | 2        |   Number of attempts to reconnect to the socket server                                            |
 | `reconnectDelayMax`                    | `number`  | 15       | Reconnect delay (in seconds)                                                 |
 | `timeout`                 | `number`  | 20       | Wait time to establish a connection                |
+| `signalRConnectionType` | `string` | `Both` | SignalR transport: `WebSockets`, `LongPolling`, or `Both` |
+| `skipNegotiation` | `boolean` | `false` | Skips the SignalR `/negotiate` request and connects directly using WebSockets. When enabled, `WebSockets` is selected even if `signalRConnectionType` specifies another transport. |
+
+When a firewall blocks `/negotiate`, set `skipNegotiation` to `true`. The SignalR server must support WebSockets for this setting to work.
 
 ## Thank You
 Thanks to all colleagues of [CAP Company](https://i-cap.ir)

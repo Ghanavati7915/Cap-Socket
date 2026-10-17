@@ -10,6 +10,7 @@ export interface SocketOptions {
     reconnectDelayMax?: number
     timeout?: number
     signalRConnectionType?: "WebSockets" | "LongPolling" | "Both" // حذف none
+    skipNegotiation?: boolean
 }
 
 /* -------------------------------- Types -------------------------------- */
@@ -121,18 +122,24 @@ export class SocketManager {
 
     //#region Connect SignalR
     private async connectSignalR() {
+        const skipNegotiation = this.options.skipNegotiation ?? false;
         const transportMap: Record<string, signalR.HttpTransportType> = {
             WebSockets: signalR.HttpTransportType.WebSockets,
             LongPolling: signalR.HttpTransportType.LongPolling,
             Both: signalR.HttpTransportType.WebSockets | signalR.HttpTransportType.LongPolling,
         };
 
-        const transportType =
-            transportMap[this.options.signalRConnectionType ?? "Both"];
+        // SignalR can skip /negotiate only when connecting directly over WebSockets.
+        // Prefer WebSockets automatically when this option is enabled.
+        const connectionType = skipNegotiation
+            ? "WebSockets"
+            : this.options.signalRConnectionType ?? "Both";
+        const transportType = transportMap[connectionType];
 
         this.signalRConn = new signalR.HubConnectionBuilder()
             .withUrl(this.url, {
                 transport: transportType,
+                skipNegotiation,
                 // ارسال توکن در header Authorization
                 headers: {
                     Authorization: `Bearer ${this.resolveToken()}`,

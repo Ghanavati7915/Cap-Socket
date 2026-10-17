@@ -7,6 +7,7 @@
     "reconnectDelay": 2,
     "reconnectDelayMax": 15,
     "timeout": 20,
-    "signalRConnectionType": "LongPolling"
+    "signalRConnectionType": "WebSockets",
+    "skipNegotiation": true
   }
 }
